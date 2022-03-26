@@ -1,3 +1,71 @@
 // CMPT 130 Assignment 5
 // Due March 27 2022
 
+// Sample code for assignment
+// You may copy-and-paste the following code into your submission, without citation
+// Written by John Edgar; modified by Brian Fraser.
+
+#include <vector>
+#include <algorithm>
+#include <iostream>
+using namespace std;
+
+// Prototypes
+void swap(vector<int> &v, int i, int j);
+void permute(vector<vector<int>> & result, vector<int> & v, int left, int right);
+
+// Returns all the permutations of the input vector v
+vector<vector<int>> computePermutations(vector<int> v)
+{
+    vector<vector<int>> results;
+    // Call recursive function to compute the permutations
+    permute(results, v, 0, v.size() - 1);
+    return results;
+}
+
+// Generates all the permutations of the integers store in v
+// USAGE: values of left and right in initial call should be 0 and v.size()-1
+// PRE: result is empty
+//      0 <= left, right < v.size()
+// PARAM: result - vector to contain the permutations
+//        v - input vector of integers
+//        left, right - indexes of current subarray
+// POST: Stores the permutations of the input vector v in result
+void permute(vector<vector<int>> &result, vector<int> & v, int left, int right)
+{
+	if (left == right) {
+		result.push_back(v);
+	}
+	else {
+		for (int i = left; i <= right; i++) {
+			swap(v, i, left);
+			permute(result, v, left + 1, right);
+			swap(v, i, left);
+		}
+	}
+}
+ 
+// Swaps elements at indexes i and j of vector v
+// PRE: 0 <= i, j < v.size()
+// PARAM i, j - indexes of elements to be swapped in v
+void swap(vector<int> &v, int i, int j)
+{
+	int temp = v.at(i);
+	v.at(i) = v.at(j);
+	v.at(j) = temp;
+}
+
+
+// Sample on how to use the computePermutations() function
+int main() 
+{
+    vector<int> v {1, 2, 3, 4};
+    vector<vector<int>> perms = computePermutations(v);
+    
+    for (vector<int> row : perms) {
+        for (int x : row) {
+            cout << x;
+        }
+        cout << endl;
+    }
+}
